@@ -43,16 +43,37 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
+            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'user'
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'article'
+                ],
             ],
         ],
-        */
     ],
     'params' => $params,
+    'controllerMap' => [
+        // declares "account" controller using a class name
+        //'user' => 'app\controllers\UserController',
+        'account' => [ // Fixture generation command line.
+            'class' => 'app\controllers\UserController',
+        ],
+
+        // declares "article" controller using a configuration array
+        // 'article' => [
+        //     'class' => 'app\controllers\PostController',
+        //     'enableCsrfValidation' => false,
+        // ],
+    ],
 ];
 
 if (YII_ENV_DEV) {
@@ -61,14 +82,14 @@ if (YII_ENV_DEV) {
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1', '172.23.0.3'],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1', '172.23.0.3'],
     ];
 }
 
