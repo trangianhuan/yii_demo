@@ -8,6 +8,9 @@ use app\models\ArticleSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\Pagination;
+use yii\helpers\VarDumper;
+use yii\data\ActiveDataProvider;
 
 /**
  * ArticleController implements the CRUD actions for Article model.
@@ -41,6 +44,52 @@ class ArticleController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionTest()
+    {
+        $query = Article::find();
+        // $countQuery = clone $query;
+        // $pages = new Pagination([
+        //     'totalCount' => $countQuery->count(),
+        //     'pageSize' => 5,
+        // ]);
+        // //VarDumper::dump($pages->getPageSize());
+
+        // $models = $query->offset($pages->offset)
+        //     ->limit($pages->limit)
+        //     ->all();
+        // return $this->render('test', [
+        //      'models' => $models,
+        //      'pages' => $pages,
+        // ]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 5,
+                'route' => 'article/datatest',
+            ],
+        ]);
+
+        return $this->render('test', [
+             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionDatatest()
+    {
+        $query = Article::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 5,
+            ],
+        ]);
+
+        return $this->renderAjax('data_paging_test', [
+             'dataProvider' => $dataProvider,
         ]);
     }
 
